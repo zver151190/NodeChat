@@ -12,6 +12,7 @@ var url = 'mongodb://admin:054398262@ds239217.mlab.com:39217/nodejs'
   server.listen(process.env.PORT || 5000);
 
 mongodb.connect(url, function(err, client) {
+    throw err;
     io.on('connection', function(socket){
       socket.on('startUserChat', function (userId) {
         const db = client.db('nodejs');
