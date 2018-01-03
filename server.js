@@ -3,6 +3,7 @@ const MongoClient = require('mongodb').MongoClient;
 const path = require('path');
 const io = require('socket.io')(http);
 const PORT = process.env.PORT || 5000;
+const url = 'mongodb://admin:0543982262@ds239217.mlab.com:39217/nodejs';
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
