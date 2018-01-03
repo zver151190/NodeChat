@@ -25,11 +25,12 @@ app.get('/', function(req, res){
 
 mongodb.connect(uri, function(err, client) {
     
-      global_socket.on('startUserChat', function (userId) {
-        const db = client.db('nodejs');
-        db.collection("chat").find({user_id:userId}).toArray(function(err, result) {
-          socket.emit('renderChat',result); 
-        });
+      global_socket.on('startUserChat', function (userId) { 
+          const db = client.db('nodejs');
+          db.collection("chat").find({user_id:userId}).toArray(function(err, result) {
+            socket.emit('renderChat',result); 
+          });
+       });
 
       global_socket.on('sendMessage', function (data) {
         const db = client.db('nodejs');
