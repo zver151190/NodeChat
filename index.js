@@ -16,7 +16,7 @@ app.get('/', function(req, res){
     var username = req.query.username;
     var email = req.query.email;
     var user_id = req.query.user_id;
-    io.on('connection', function(socket){
+    io.on('connection', function(socket){ 
           global_socket = socket;
           var result = {username:username,email:email,user_id:user_id};
           socket.emit('userInfo',result); 
