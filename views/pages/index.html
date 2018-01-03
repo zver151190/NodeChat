@@ -124,7 +124,7 @@
   function startUserChat(socket,client_id){
         socket.emit('startUserChat', client_id);
     }
-  function sendMessage(socket,msg){
+  function sendMessage(socket,msg,user_id,username,email){
         var data = {user_id:user_id,message:msg,username:username,email:email};
         console.log(data);
         socket.emit('sendMessage', data);
@@ -196,7 +196,7 @@
             if (event.which == 13) {
               var msg = $("#conv-t-area textarea").val();
               $("#conv-t-area textarea").val("");
-              sendMessage(socket,user_id,msg);
+              sendMessage(socket,user_id,msg,user_id,user_username,user_email);
             }else{
                socket.emit('typing','typing');
                clearTimeout(timer); 
