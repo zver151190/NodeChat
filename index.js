@@ -22,7 +22,7 @@ app.get('/', function(req, res){
 
 
 mongodb.connect(uri, function(err, client) {
-        io.once('connect', function(socket){
+        io.on('connection', function(socket){
                   socket.on('startUserChat', function (userId) { 
                       const db = client.db('nodejs');
                       db.collection("chat").find({user_id:userId}).toArray(function(err, result) {
