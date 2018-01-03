@@ -23,14 +23,14 @@ app.get('/', function(req, res){
 
 mongodb.connect(uri, function(err, client) {
         io.on('connection', function(socket){
-                  global_socket.on('startUserChat', function (userId) { 
+                  socket.on('startUserChat', function (userId) { 
                       const db = client.db('nodejs');
                       db.collection("chat").find({user_id:userId}).toArray(function(err, result) {
-                        global_socket.emit('renderChat',result); 
+                        socket.emit('renderChat',result); 
                       });
                    });
 
-                  global_socket.on('sendMessage', function (data) {
+                  socket.on('sendMessage', function (data) {
                     const db = client.db('nodejs');
                     var user_id = data.user_id;
                     var email = data.email;
