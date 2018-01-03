@@ -125,6 +125,10 @@
   })();
 </script>
 <script>
+  
+  function chatAlert(){
+    alert("alert custom");
+  }
   function startUserChat(socket,client_id){
         console.log("start chat");
         socket.emit('startUserChat', client_id);
