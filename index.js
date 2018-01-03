@@ -15,7 +15,7 @@ mongodb.connect(uri, function(err, client) {
 var global_socket;  
 io.on('connection', function(socket){ 
   global_socket = socket;
-});  
+  
           app.get('/', function(req, res){
             res.sendFile(__dirname + '/views/pages/index.html');
               var key = req.query.k;
@@ -45,5 +45,5 @@ io.on('connection', function(socket){
                   var timestamp = d.getTime();
                   db.collection("chat").update( {user_id:user_id},{$push:{messages:{ user_id: user_id,creation_time:timestamp, username: username,email:email,message:message,type:"user" }}} );
                 });
-
+     });
 });
