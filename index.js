@@ -7,6 +7,10 @@ const path = require('path')
 var uri = 'mongodb://admin:0543982262@ds239217.mlab.com:39217/nodejs'
 var global_socket;
 
+io.on('connection', function(socket){ 
+          global_socket = socket;
+});
+  
 app.use(express.static(path.join(__dirname, 'public')))
 server.listen(process.env.PORT || 5000);
 
@@ -16,12 +20,10 @@ app.get('/', function(req, res){
     var username = req.query.username;
     var email = req.query.email;
     var user_id = req.query.user_id;
-    io.on('connection', function(socket){ 
-          global_socket = socket;
-          var result = {username:username,email:email,user_id:user_id};
-          socket.emit('userInfo',result); 
-      });
+    var result = {username:username,email:email,user_id:user_id};
+    global_socket.emit('userInfo',result); 
 });
+
 
 mongodb.connect(uri, function(err, client) {
     
