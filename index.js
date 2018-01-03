@@ -1,8 +1,8 @@
 const express = require('express')
 const mongodb = require('mongodb').MongoClient
 const path = require('path')
-const http = require('http').Server(express);
-const io = require('socket.io')(http)
+const http = require('http').Server(express)
+const io = require('socket.io').listen(http)
 var url = ' mongodb://admin:054398262@ds239217.mlab.com:39217/nodejs'
 const PORT = process.env.PORT || 5000
 
