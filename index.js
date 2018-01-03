@@ -43,7 +43,9 @@ mongodb.connect(uri, function(err, client) {
                     var message = data.message;
                     var d = new Date();
                     var timestamp = d.getTime();
+                    var update_obj = { user_id: user_id,creation_time:timestamp, username: username,email:email,message:message,type:"user" };
                     db.collection("chat").update( {user_id:user_id},{$push:{messages:{ user_id: user_id,creation_time:timestamp, username: username,email:email,message:message,type:"user" }}} );
+                    socket.emit('sendMessageResponse',update_obj);
                   });
           
                 socket.on('disconnect', function() {
