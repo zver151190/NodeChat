@@ -11,10 +11,9 @@ server.listen(process.env.PORT || 5000);
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/views/pages/index.html');
-  io.on('connection', function(socket){
-                var result = {username:req.query.username,email:req.query.email};
-                socket.emit('userInfo',result); 
-            });
+    var key = req.query.k;
+    var username = req.query.username;
+    var email = req.query.email;
 });
 
 mongodb.connect(uri, function(err, client) {
