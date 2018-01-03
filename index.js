@@ -10,18 +10,19 @@ app.use(express.static(path.join(__dirname, 'public')))
   
 app.get('/', function(req, res){
          res.sendFile(__dirname + '/views/pages/index.html');
-         var key = req.query.k;
-         var username = req.query.username;
-         var email = req.query.email;
-         var user_id = req.query.user_id;
-         var result = {username:username,email:email,user_id:user_id};
-         io.on('connection', function(socket){ 
-            global_socket = socket;
-            global_socket.emit('userInfo',result); 
-          });
-  
-          mongodb.connect(uri, function(err, client) {
+         io.on('connection', function(socket){
+           var key = req.query.k;
+           var username = req.query.username;
+           var email = req.query.email;
+           var user_id = req.query.user_id;
+           var result = {username:username,email:email,user_id:user_id};
+           socket.emit('userInfo',result);
+          });            
+});
 
+
+mongodb.connect(uri, function(err, client) {
+        io.on('connection', function(socket){
                   global_socket.on('startUserChat', function (userId) { 
                       const db = client.db('nodejs');
                       db.collection("chat").find({user_id:userId}).toArray(function(err, result) {
@@ -39,7 +40,7 @@ app.get('/', function(req, res){
                     var timestamp = d.getTime();
                     db.collection("chat").update( {user_id:user_id},{$push:{messages:{ user_id: user_id,creation_time:timestamp, username: username,email:email,message:message,type:"user" }}} );
                   });
-          });
+          });   
 });
 server.listen(process.env.PORT || 5000);
 
