@@ -1,7 +1,7 @@
 var express = require('express')
 var app = express()
-var server = require('http').createServer(app),
-var io = require('socket.io').listen(server),
+var server = require('http').createServer(app)
+var io = require('socket.io').listen(server)
 const mongodb = require('mongodb').MongoClient
 const path = require('path')
 var url = ' mongodb://admin:054398262@ds239217.mlab.com:39217/nodejs'
