@@ -1,8 +1,8 @@
-const express = require('express')
+const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
-const path = require('path')
-const io = require('socket.io')(http)
-const PORT = process.env.PORT || 5000
+const path = require('path');
+const io = require('socket.io')(http);
+const PORT = process.env.PORT || 5000;
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
