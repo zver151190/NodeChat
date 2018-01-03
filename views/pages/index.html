@@ -172,7 +172,7 @@
           div+='<span id="av-box"><img src="'+avatar+'"></span>';
           div+='<p id="ms"><span id="nm">'+username+'</span><span id="ms-text">'+message+'</span></p>';
           div+='</div>';
-          $("#chat-content").prepend(div);
+          $("#chat-content").append(div);
     });
     socket.on('renderChat', function(data){
       console.log(data);
