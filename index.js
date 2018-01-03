@@ -42,6 +42,9 @@ mongodb.connect(uri, function(err, client) {
                   });
           });   
 });
+ io.on('disconnect', function(socket){
+    socket.close();
+ });
 server.listen(process.env.PORT || 5000);
 
 
