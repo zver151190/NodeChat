@@ -120,11 +120,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
-  (function(){
-       var element
-  })();
-</script>
-<script>
   
   function startUserChat(socket,client_id){
         console.log("start chat");
@@ -137,10 +132,16 @@
     } 
   $(function () {
     var socket = io();
-    
+    var user_username;
+    var user_email;
+    var user_id;
     socket.on('userInfo', function(result){
-      console.log("UserInfo");
-      console.log(result);
+      user_username = result.username;
+      user_email = result.email;
+      user_id = result.user_id;
+      console.log(user_username);
+      console.log(user_email);
+      console.log(user_id);
     });
     
     socket.on('chat message', function(msg){
@@ -193,6 +194,22 @@
               $("#conv-t-area textarea").val("");
               sendMessage(socket,client_id,msg);
           });
+      
+          var timer = null;
+          $('#conv-t-area textarea').keydown(function(){
+            if (event.which == 13) {
+              var msg = $("#conv-t-area textarea").val();
+              $("#conv-t-area textarea").val("");
+              sendMessage(socket,user_id,msg);
+            }else{
+               socket.emit('typing','typing');
+               clearTimeout(timer); 
+               timer = setTimeout(socket.emit('typing',''), 5000);
+            }
+          });
+      
+      
+      
       });
   });
 </script>
