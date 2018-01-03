@@ -122,12 +122,11 @@
 <script>
   
   function startUserChat(socket,client_id){
-        console.log("start chat");
         socket.emit('startUserChat', client_id);
     }
-  function sendMessage(socket,client_id,msg){
-        console.log("send message");
-        var data = {user_id:client_id,message:msg,username:"artiom",email:"artiom@mail.com"};
+  function sendMessage(socket,msg){
+        var data = {user_id:user_id,message:msg,username:username,email:email};
+        console.log(data);
         socket.emit('sendMessage', data);
     } 
   $(function () {
@@ -139,9 +138,6 @@
       user_username = result.username;
       user_email = result.email;
       user_id = result.user_id;
-      console.log(user_username);
-      console.log(user_email);
-      console.log(user_id);
     });
     
     socket.on('chat message', function(msg){
