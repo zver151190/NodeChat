@@ -1,8 +1,11 @@
-const express = require('express')
+const express = require('express'),
+    app = express(),
+    server = require('http').createServer(app),
+    io = require('socket.io').listen(server),
+    server.listen(process.env.PORT || 5000);
+
 const mongodb = require('mongodb').MongoClient
 const path = require('path')
-const http = require('http').Server(express)
-const io = require('socket.io').listen(http)
 var url = ' mongodb://admin:054398262@ds239217.mlab.com:39217/nodejs'
 const PORT = process.env.PORT || 5000
 
@@ -10,7 +13,6 @@ express()
   .use(express.static(path.join(__dirname, 'public')))
   .get('/', (req, res) => res.sendFile(__dirname + '/views/pages/index.html'))
   .get('/dashboard', (req, res) => res.sendFile(__dirname + '/views/pages/dashboard.html'))
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
 mongodb.connect(url, function(err, client) {
     io.on('connection', function(socket){
