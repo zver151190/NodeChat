@@ -1,18 +1,15 @@
-var express = require('express'),
-    app = express(),
-    server = require('http').createServer(app),
-    io = require('socket.io').listen(server),
-    server.listen(process.env.PORT || 5000);
-
+var express = require('express')
+var app = express()
+var server = require('http').createServer(app),
+var io = require('socket.io').listen(server),
 const mongodb = require('mongodb').MongoClient
 const path = require('path')
 var url = ' mongodb://admin:054398262@ds239217.mlab.com:39217/nodejs'
-const PORT = process.env.PORT || 5000
 
-express()
-  .use(express.static(path.join(__dirname, 'public')))
-  .get('/', (req, res) => res.sendFile(__dirname + '/views/pages/index.html'))
-  .get('/dashboard', (req, res) => res.sendFile(__dirname + '/views/pages/dashboard.html'))
+  app.use(express.static(path.join(__dirname, 'public')))
+  app.get('/', (req, res) => res.sendFile(__dirname + '/views/pages/index.html'))
+  app.get('/dashboard', (req, res) => res.sendFile(__dirname + '/views/pages/dashboard.html'))
+  server.listen(process.env.PORT || 5000);
 
 mongodb.connect(url, function(err, client) {
     io.on('connection', function(socket){
