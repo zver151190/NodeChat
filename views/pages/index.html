@@ -198,7 +198,7 @@
             if (event.which == 13) {
               var msg = $("#conv-t-area textarea").val();
               $("#conv-t-area textarea").val("");
-              sendMessage(socket,user_id,msg,user_userId,user_username,user_email);
+              sendMessage(socket,msg,user_userId,user_username,user_email);
             }else{
                socket.emit('typing','typing');
                clearTimeout(timer); 
