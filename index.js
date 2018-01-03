@@ -6,16 +6,16 @@ const mongodb = require('mongodb').MongoClient
 const path = require('path')
 var uri = 'mongodb://admin:0543982262@ds239217.mlab.com:39217/nodejs'
 
-  app.use(express.static(path.join(__dirname, 'public')))
-  app.get('/', (req, res){
-          res.sendFile(__dirname + '/views/pages/index.html');
-          io.on('connection', function(socket){
+app.use(express.static(path.join(__dirname, 'public')))
+server.listen(process.env.PORT || 5000);
+
+app.get('/', function(req, res){
+  res.sendFile(__dirname + '/views/pages/index.html');
+  io.on('connection', function(socket){
                 var result = {username:req.query.username,email:req.query.email};
                 socket.emit('userInfo',result); 
             });
 });
-  app.get('/dashboard', (req, res) => res.sendFile(__dirname + '/views/pages/dashboard.html'))
-  server.listen(process.env.PORT || 5000);
 
 mongodb.connect(uri, function(err, client) {
     io.on('connection', function(socket){
