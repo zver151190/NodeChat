@@ -4,14 +4,14 @@ var server = require('http').createServer(app)
 var io = require('socket.io').listen(server)
 const mongodb = require('mongodb').MongoClient
 const path = require('path')
-var uri = 'mongodb://admin:054398262@ds239217.mlab.com:39217/nodejs'
+var uri = 'mongodb://admin:0543982262@ds239217.mlab.com:39217/nodejs'
 
   app.use(express.static(path.join(__dirname, 'public')))
   app.get('/', (req, res) => res.sendFile(__dirname + '/views/pages/index.html'))
   app.get('/dashboard', (req, res) => res.sendFile(__dirname + '/views/pages/dashboard.html'))
   server.listen(process.env.PORT || 5000);
 
-mongodb.MongoClient.connect(uri, function(err, client) {
+mongodb.connect(uri, function(err, client) {
     console.log(err);
     console.log(client);
     io.on('connection', function(socket){
