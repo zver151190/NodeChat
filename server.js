@@ -4,7 +4,15 @@ const path = require('path');
 const io = require('socket.io')(http);
 const PORT = process.env.PORT || 5000;
 const url = 'mongodb://admin:0543982262@ds239217.mlab.com:39217/nodejs';
+var app = require('express')();
 
+app.set('view engine', 'ejs');
+app.get('/', function(req, res){
+  res.sendFile(__dirname + '/views/pages/index.ejs');
+});
+app.get('/chat', function(req, res){
+  res.sendFile(__dirname + '/views/pages/chat.ejs');
+});
 
 MongoClient.connect(url, function(err, client) {
     io.on('connection', function(socket){
