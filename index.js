@@ -5,24 +5,29 @@ var io = require('socket.io').listen(server)
 const mongodb = require('mongodb').MongoClient
 const path = require('path')
 var uri = 'mongodb://admin:0543982262@ds239217.mlab.com:39217/nodejs'
-var global_socket;
+var clients = {}
+var key;
+var username;
+var email;
+var user_id;
+var result;
+
 app.use(express.static(path.join(__dirname, 'public')))
   
 app.get('/', function(req, res){
          res.sendFile(__dirname + '/views/pages/index.html');
-         io.on('connection', function(socket){
-           var key = req.query.k;
-           var username = req.query.username;
-           var email = req.query.email;
-           var user_id = req.query.user_id;
-           var result = {username:username,email:email,user_id:user_id};
-           socket.emit('userInfo',result);
-          });            
+           key = req.query.k;
+           username = req.query.username;
+           email = req.query.email;
+           user_id = req.query.user_id;
+           result = {username:username,email:email,user_id:user_id};         
 });
 
 
 mongodb.connect(uri, function(err, client) {
         io.on('connection', function(socket){
+                 clients[socket.id] = socket;
+                 socket.emit('userInfo',result);
                   socket.on('startUserChat', function (userId) { 
                       const db = client.db('nodejs');
                       db.collection("chat").find({user_id:userId}).toArray(function(err, result) {
@@ -40,6 +45,11 @@ mongodb.connect(uri, function(err, client) {
                     var timestamp = d.getTime();
                     db.collection("chat").update( {user_id:user_id},{$push:{messages:{ user_id: user_id,creation_time:timestamp, username: username,email:email,message:message,type:"user" }}} );
                   });
+          
+                socket.on('disconnect', function() {
+                    delete clients[socket.id];
+                  });
+          
           });   
 });
 server.listen(process.env.PORT || 5000);
