@@ -173,6 +173,7 @@
           div+='<p id="ms"><span id="nm">'+username+'</span><span id="ms-text">'+message+'</span></p>';
           div+='</div>';
           $("#chat-content").append(div);
+          $('#chat-panel').animate({scrollTop: $('#chat-content').height()}, 300);
     });
     socket.on('renderChat', function(data){
       console.log(data);
