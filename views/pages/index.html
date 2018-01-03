@@ -149,7 +149,6 @@
     });
   });
   $(document).ready(function(){
-    console.log(parent.getObg());
     var socket = io();
     startUserChat(socket,"10");
     socket.on('renderChat', function(data){
