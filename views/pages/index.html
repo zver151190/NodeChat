@@ -1,8 +1,31 @@
+Skip to content
+This repository
+Search
+Pull requests
+Issues
+Marketplace
+Explore
+ @zver151190
+ Sign out
+ Unwatch 1
+  Star 0  Fork 0 zver151190/NodeChat
+ Code  Issues 0  Pull requests 0  Projects 0  Wiki  Insights  Settings
+Branch: master Find file Copy pathNodeChat/views/pages/index.html
+4037d19  4 minutes ago
+@zver151190 zver151190 Update index.html
+1 contributor
+RawBlameHistory     
+193 lines (177 sloc)  5.63 KB
 <!doctype html>
 <html>
   <head>
     <title>Chat</title>
     <style>
+        #chat-panel{
+          height:290px;
+          padding-bottom: 10px;
+        }
+      
         .chat-container {
             width: 100%;
             height: 100%;
@@ -29,7 +52,7 @@
             margin: 0px;
             color: white;
             text-align: center;
-            padding: 15px;
+            padding: 10px;
         }
         #chat-content{
             padding:10px;
@@ -41,7 +64,6 @@
             width: 100%;
             margin-bottom: 5px;
         }
-
         #nm {
             margin: 0px;
             font-size: 14px;
@@ -72,19 +94,21 @@
             top: 8px;
         }
         #av-box img{height:100%;}
-
         #conv-t-area{
              width: 100%;
             height: 100px;
             padding: 5px;
             display: block;
+            padding: 0px 10px;
         }
         #conv-t-area textarea{
                 width: 100%;
                 height: 70%;
+                border-radius: 5px;
         }
         #conv-t-area button{
             width:100%;
+            display:none;
         }
         .r-box #av-box{
           float:right;
@@ -112,18 +136,15 @@
   })();
 </script>
 <script>
-
   function startUserChat(socket,client_id){
         console.log("start chat");
         socket.emit('startUserChat', client_id);
     }
-
   function sendMessage(socket,client_id,msg){
         console.log("send message");
         var data = {user_id:client_id,message:msg,username:"artiom",email:"artiom@mail.com"};
         socket.emit('sendMessage', data);
     } 
-
   $(function () {
     var socket = io();
     
@@ -137,16 +158,14 @@
       
     });
   });
-
   $(document).ready(function(){
     var socket = io();
     startUserChat(socket,"10");
-
     socket.on('renderChat', function(data){
       console.log(data);
         var user_id = "10";
         var welcome_message = "Hello User";
-        var chat = '<div class="chat-container" data-id="'+user_id+'" ><div id="chat-header"><p id="welcome-message">'+welcome_message+'</p></div><div id="chat-content">';
+        var chat = '<div class="chat-container" data-id="'+user_id+'" ><div id="chat-header"><p id="welcome-message">'+welcome_message+'</p></div><div id="chat-panel"><div id="chat-content">';
         if(data.length > 0){
           $.each(data[0].messages,function(index,value){                  
                  var user_id = value.user_id;
@@ -169,24 +188,32 @@
                  chat+=div;
           });
         }
-        chat+='</div><div id="conv-t-area"><textarea name="conv-t" placeholder="Type your message here"></textarea>';
+        chat+='</div></div><div id="conv-t-area"><textarea name="conv-t" placeholder="Type your message here"></textarea>';
         //If data dont have client id it means he doesnt exists
         chat+='<button id="chat-submit">Send</button></div></div>';
         $("body").prepend(chat);
-
           $('#chat-submit').click(function(){
               var msg = $("#conv-t-area textarea").val();
               var client_id = $('.chat-container').attr("data-id");
               $("#conv-t-area textarea").val("");
               sendMessage(socket,client_id,msg);
           });
-
       });
-
-
   });
 </script>
   <body>
     
   </body>
 </html>
+© 2018 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+API
+Training
+Shop
+Blog
+About
