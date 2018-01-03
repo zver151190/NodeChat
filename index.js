@@ -8,19 +8,19 @@ var uri = 'mongodb://admin:0543982262@ds239217.mlab.com:39217/nodejs'
 var global_socket;
 app.use(express.static(path.join(__dirname, 'public')))
   
-io.on('connection', function(socket){ 
+app.get('/', function(req, res){
+         res.sendFile(__dirname + '/views/pages/index.html');
+         var key = req.query.k;
+         var username = req.query.username;
+         var email = req.query.email;
+         var user_id = req.query.user_id;
+         var result = {username:username,email:email,user_id:user_id};
+         io.on('connection', function(socket){ 
             global_socket = socket;
-            app.get('/', function(req, res){
-            res.sendFile(__dirname + '/views/pages/index.html');
-              var key = req.query.k;
-              var username = req.query.username;
-              var email = req.query.email;
-              var user_id = req.query.user_id;
-              var result = {username:username,email:email,user_id:user_id};
-              global_socket.emit('userInfo',result); 
+            global_socket.emit('userInfo',result); 
           });
   
-    mongodb.connect(uri, function(err, client) {
+          mongodb.connect(uri, function(err, client) {
 
                   global_socket.on('startUserChat', function (userId) { 
                       const db = client.db('nodejs');
@@ -39,7 +39,7 @@ io.on('connection', function(socket){
                     var timestamp = d.getTime();
                     db.collection("chat").update( {user_id:user_id},{$push:{messages:{ user_id: user_id,creation_time:timestamp, username: username,email:email,message:message,type:"user" }}} );
                   });
-  });
+          });
 });
 server.listen(process.env.PORT || 5000);
 
