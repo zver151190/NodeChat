@@ -22,7 +22,7 @@ mongodb.connect(uri, function(err, client) {
         });
       });
       socket.on('sendMessage', function (data) {
-        const db = client.db('mongochat');
+        const db = client.db('nodejs');
         var user_id = data.user_id;
         var email = data.email;
         var username = data.username;
