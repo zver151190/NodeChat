@@ -154,7 +154,26 @@
       startUserChat(socket,user_userId);
     });
     
-    
+    socket.on('sendMessageResponse', function(value){
+        var user_id = value.user_id;
+        var username = value.username;
+        var email = value.email;
+        var created = value.creation_time;
+        var type = value.type;
+        var message = value.message;
+        if(type=="support"){
+           var box_class = "r-box";
+           var avatar = "https://1.img-dpreview.com/files/p/TC1x1S40~avatars/8130397526/1/avatar.jpg";
+         }else if(type=="user"){
+           var box_class = "l-box";
+           var avatar = "https://d2giyh01gjb6fi.cloudfront.net/useravatar/0001/67/thumb_66160_useravatar_small.jpeg";
+          }
+          var div = '<div class="chat-box '+box_class+'">';
+          div+='<span id="av-box"><img src="'+avatar+'"></span>';
+          div+='<p id="ms"><span id="nm">'+username+'</span><span id="ms-text">'+message+'</span></p>';
+          div+='</div>';
+          $("#chat-content").prepend(div);
+    });
     socket.on('renderChat', function(data){
       console.log(data);
         var user_id = user_userId;
