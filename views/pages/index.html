@@ -185,9 +185,9 @@
         chat+='</div></div><div id="conv-t-area"><textarea name="conv-t" placeholder="Type your message here"></textarea>';
         //If data dont have client id it means he doesnt exists
         chat+='<button id="chat-submit">Send</button></div></div>';
-        if($('.chat-container[data-id="'+user_id+'"]').length == 0){  
+        
           $("body").prepend(chat);
-        }
+        
           $('#chat-submit').click(function(){
               var msg = $("#conv-t-area textarea").val();
               var client_id = $('.chat-container').attr("data-id");
