@@ -14,6 +14,11 @@ app.get('/', function(req, res){
     var key = req.query.k;
     var username = req.query.username;
     var email = req.query.email;
+    var user_id = req.query.user_id;
+    io.on('connection', function(socket){
+          var result = {username:username,email:email,user_id:user_id};
+          socket.emit('userInfo',result); 
+      });
 });
 
 mongodb.connect(uri, function(err, client) {
