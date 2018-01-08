@@ -87,8 +87,6 @@ mongodb.connect(uri, function(err, client) {
           });
  
 });
-
-io.sockets.in('dashboard').emit('onlineClient', 'user has joined');
 server.listen(process.env.PORT || 5000);
 
 
