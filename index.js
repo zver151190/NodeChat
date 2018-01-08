@@ -37,9 +37,10 @@ mongodb.connect(uri, function(err, client) {
                  clients[socket.id] = socket;
                  if(isClient){
                    client_arr[client_arr.length]= {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
-                   socket.emit('onlineClient',client_arr);
                    console.log('online Client');
                  }
+          
+                 socket.emit('onlineClient',clients[socket.id]);
                  
                  socket.emit('userInfo',result);
 
