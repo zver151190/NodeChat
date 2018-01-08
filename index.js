@@ -72,7 +72,7 @@ mongodb.connect(uri, function(err, client) {
                   if(isClient){
                      socket.emit.to('dashboard').emit('onlineClient', 'user has left '+socket.id);
                   }
-                    delete clients[socket.id];
+                    delete clients[socket.id]; 
                   });
          
           });
