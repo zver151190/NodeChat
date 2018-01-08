@@ -64,7 +64,7 @@ mongodb.connect(uri, function(err, client) {
                     var update_obj = { user_id: user_id,creation_time:timestamp, username: username,email:email,message:message,type:"user" };
                     db.collection("chat").update( {user_id:user_id},{$push:{messages:{ user_id: user_id,creation_time:timestamp, username: username,email:email,message:message,type:"user" }}} );
                     socket.emit('sendMessageResponse',update_obj);
-                    socket.to('dashboard').emit('onlineClient', 'user sent message');
+                    socket.to('dashboard').emit('clientSentMessage', update_obj);
               });
           
              socket.on('disconnect', function() {
