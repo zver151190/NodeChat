@@ -5,12 +5,14 @@ var io = require('socket.io').listen(server)
 const mongodb = require('mongodb').MongoClient
 const path = require('path')
 var uri = 'mongodb://admin:0543982262@ds239217.mlab.com:39217/nodejs'
-var clients = {}
+var clients = {};
+var client_arr = {};
 var key;
 var username;
 var email;
 var user_id;
 var result;
+var isClient = false;
 
 app.use(express.static(path.join(__dirname, 'public')))
   
@@ -19,6 +21,7 @@ app.get('/', function(req, res){
            key = req.query.k;
            username = req.query.username;
            email = req.query.email;
+           isClient = true;
            user_id = req.query.user_id;
            result = {username:username,email:email,user_id:user_id};         
 });
@@ -36,8 +39,11 @@ app.get('/dashboard', function(req, res){
 mongodb.connect(uri, function(err, client) {
         io.on('connection', function(socket){
                  clients[socket.id] = socket;
+                 if(isClient){
+                   client_arr[client_arr.length] = {client_id:socket.id};
+                 }
                  socket.emit('userInfo',result);
-                 socket.emit('dashboardStatus','online');
+                 socket.emit('dashboardStatus',isClient);
                   socket.on('startUserChat', function (userId) { 
                       const db = client.db('nodejs');
                       db.collection("chat").find({user_id:userId}).toArray(function(err, result) {
