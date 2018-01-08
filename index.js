@@ -13,7 +13,8 @@ var email;
 var user_id;
 var result;
 var isClient = false;
-
+var socket = io.connect();
+console.log(socket);
 
 app.use(express.static(path.join(__dirname, 'public')))
   
