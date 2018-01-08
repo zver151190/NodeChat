@@ -40,8 +40,9 @@ mongodb.connect(uri, function(err, client) {
                    socket.join('chat');
                    client_arr[client_arr.length]= {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
                    console.log('online Client');
+                   socket.broadcast.to('dashboard').emit('onlineClient', 'user has joined');
                  }else{
-                 socket.join('dashboard');
+                    socket.join('dashboard');
                  }
           
                  socket.emit('onlineClient',socket.id);
