@@ -14,6 +14,7 @@ var user_id;
 var result;
 var isClient = false;
 
+
 app.use(express.static(path.join(__dirname, 'public')))
   
 app.get('/', function(req, res){
