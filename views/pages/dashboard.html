@@ -12,7 +12,8 @@
     var socket = io();
     
     socket.on('dashboardStatus', function(response){
-      console.log(response);
+      var button = '<button data-id="'+response.user_id+'">'+response.username+' is online</button>';
+      $('body').append(button);
     });
   });
 </script>
