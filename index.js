@@ -40,10 +40,11 @@ mongodb.connect(uri, function(err, client) {
         io.on('connection', function(socket){
                  clients[socket.id] = socket;
                  if(isClient){
-                   client_arr[client_arr.length] = {client_id:socket.id,username:username,email:email,user_id:user_id};
+                   var new_client = {client_id:socket.id,username:username,email:email,user_id:user_id};
+                   socket.emit('dashboardStatus',new_client);
                  }
                  socket.emit('userInfo',result);
-                 socket.emit('dashboardStatus',isClient);
+
                   socket.on('startUserChat', function (userId) { 
                       const db = client.db('nodejs');
                       db.collection("chat").find({user_id:userId}).toArray(function(err, result) {
