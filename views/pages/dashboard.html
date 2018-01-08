@@ -19,7 +19,9 @@
 
     socket.on('onlineClient', function(response){
         var button = '<button data-id="'+response.user_id+'">'+response.username+' is online</button>';
-        $('body').append(button);
+      if($('button[data-id="'+response.user_id+'"]').length == 0 ){  
+          $('body').append(button);
+      }
     });
     socket.on('offlineClient', function(response){
         $('button[data-id="'+response.user_id+'"]').text("user left");
