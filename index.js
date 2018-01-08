@@ -35,8 +35,9 @@ mongodb.connect(uri, function(err, client) {
         io.on('connection', function(socket){
                  clients[socket.id] = socket;
                  if(isClient){
-                   var new_client = {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
-                   socket.emit('dashboardStatus',new_client);
+                   var onlineClient = {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
+                   socket.emit('onlineClient',onlineClient);
+                   console.log('online Client');
                  }
                  socket.emit('userInfo',result);
 
