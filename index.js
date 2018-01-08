@@ -27,12 +27,7 @@ app.get('/', function(req, res){
 });
 
 app.get('/dashboard', function(req, res){
-         res.sendFile(__dirname + '/views/pages/dashboard.html');
-           key = req.query.k;
-           username = req.query.username;
-           email = req.query.email;
-           user_id = req.query.user_id;
-           result = {username:username,email:email,user_id:user_id};         
+         res.sendFile(__dirname + '/views/pages/dashboard.html');       
 });
 
 
