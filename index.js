@@ -39,6 +39,7 @@ mongodb.connect(uri, function(err, client) {
                    socket.emit('onlineClient',onlineClient);
                    console.log('online Client');
                  }
+                 isClient = false;
                  socket.emit('userInfo',result);
 
                   socket.on('startUserChat', function (userId) { 
