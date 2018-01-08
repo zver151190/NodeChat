@@ -63,11 +63,11 @@ mongodb.connect(uri, function(err, client) {
                     db.collection("chat").update( {user_id:user_id},{$push:{messages:{ user_id: user_id,creation_time:timestamp, username: username,email:email,message:message,type:"user" }}} );
                     socket.emit('sendMessageResponse',update_obj);
                   });
-          
+          /*
                 socket.on('disconnect', function() {
                     delete clients[socket.id];
                   });
-          
+          */
           });   
 });
 server.listen(process.env.PORT || 5000);
