@@ -14,6 +14,7 @@ var user_id;
 var result;
 var isClient = false;
 
+
 app.use(express.static(path.join(__dirname, 'public')))
   
 app.get('/', function(req, res){
@@ -35,9 +36,8 @@ mongodb.connect(uri, function(err, client) {
         io.on('connection', function(socket){
                  clients[socket.id] = socket;
                  if(isClient){
-                   var onlineClient = {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
-                   socket.emit('onlineClient',onlineClient);
-                   isClient = false;
+                   client_arr[client_arr.length]= {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
+                   socket.emit('onlineClient',client_arr);
                    console.log('online Client');
                  }
                  
