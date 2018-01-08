@@ -40,7 +40,7 @@ mongodb.connect(uri, function(err, client) {
         io.on('connection', function(socket){
                  clients[socket.id] = socket;
                  if(isClient){
-                   client_arr[client_arr.length] = {client_id:socket.id};
+                   client_arr[client_arr.length] = {client_id:socket.id,username:username,email:email,user_id:user_id};
                  }
                  socket.emit('userInfo',result);
                  socket.emit('dashboardStatus',isClient);
