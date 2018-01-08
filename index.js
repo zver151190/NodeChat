@@ -35,9 +35,13 @@ app.get('/dashboard', function(req, res){
 mongodb.connect(uri, function(err, client) {
         io.on('connection', function(socket){
                  clients[socket.id] = socket;
+               
                  if(isClient){
+                   socket.join('chat');
                    client_arr[client_arr.length]= {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
                    console.log('online Client');
+                 }else{
+                 socket.join('dashboard');
                  }
           
                  socket.emit('onlineClient',socket.id);
@@ -62,7 +66,7 @@ mongodb.connect(uri, function(err, client) {
                     var update_obj = { user_id: user_id,creation_time:timestamp, username: username,email:email,message:message,type:"user" };
                     db.collection("chat").update( {user_id:user_id},{$push:{messages:{ user_id: user_id,creation_time:timestamp, username: username,email:email,message:message,type:"user" }}} );
                     socket.emit('sendMessageResponse',update_obj);
-                     socket.emit('onlineClient','user sent message');
+                    socket.broadcast.to('dashboard').emit('onlineClient', 'user sent message');
                   });
           /*
                 socket.on('disconnect', function() {
