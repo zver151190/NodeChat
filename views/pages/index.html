@@ -154,10 +154,6 @@
       startUserChat(socket,user_userId);
     });
     
-    socket.on('dashboardStatus', function(msg){
-      $("body").append($('<h1>').text(msg));
-    });
-    
     socket.on('sendMessageResponse', function(value){
         var user_id = value.user_id;
         var username = value.username;
