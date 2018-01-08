@@ -39,7 +39,7 @@ mongodb.connect(uri, function(err, client) {
                  if(isClient){
                    socket.join('chat');
                    client_arr[client_arr.length]= {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
-                   socket.emit.to('dashboard').emit('onlineClient', 'user has joined '+socket.id);
+                   socket.broadcast.to('dashboard').emit('onlineClient', 'user has joined '+socket.id);
                  }else{
                     socket.join('dashboard');
                  }
@@ -66,12 +66,12 @@ mongodb.connect(uri, function(err, client) {
                     var update_obj = { user_id: user_id,creation_time:timestamp, username: username,email:email,message:message,type:"user" };
                     db.collection("chat").update( {user_id:user_id},{$push:{messages:{ user_id: user_id,creation_time:timestamp, username: username,email:email,message:message,type:"user" }}} );
                     socket.emit('sendMessageResponse',update_obj);
-                    socket.emit.to('dashboard').emit('onlineClient', 'user sent message');
+                    socket.broadcast.to('dashboard').emit('onlineClient', 'user sent message');
                   });
           
                 socket.on('disconnect', function() {
                   if(isClient){
-                     socket.emit.to('dashboard').emit('onlineClient', 'user has left '+socket.id);
+                     socket.broadcast.to('dashboard').emit('onlineClient', 'user has left '+socket.id);
                   }
                     delete clients[socket.id]; 
                   });
