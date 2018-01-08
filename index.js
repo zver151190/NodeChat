@@ -34,6 +34,14 @@ app.get('/dashboard', function(req, res){
 
 mongodb.connect(uri, function(err, client) {
         io.on('connection', function(socket){
+          
+           socket.on('room', function(room) {
+              socket.join(room);
+           });
+          
+          
+          
+          
                  clients[socket.id] = socket;
                
                  if(isClient){
@@ -79,6 +87,8 @@ mongodb.connect(uri, function(err, client) {
           });
  
 });
+
+io.sockets.in('dashboard').emit('onlineClient', 'user has joined');
 server.listen(process.env.PORT || 5000);
 
 
