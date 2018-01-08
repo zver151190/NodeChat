@@ -76,7 +76,9 @@ mongodb.connect(uri, function(err, client) {
                     delete clients[socket.id];
                   });
          
-          });   
+          });
+  
+  socket.broadcast.to('dashboard').emit('onlineClient', 'test');
 });
 server.listen(process.env.PORT || 5000);
 
