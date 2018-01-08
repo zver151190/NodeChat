@@ -11,7 +11,12 @@
   
   $(document).ready(function(){
     var socket = io();
+    var room = "dashboard";
     
+    socket.on('connect', function() {
+      socket.emit('room', room);
+    });
+
     socket.on('onlineClient', function(response){
       $('body').append($('<h1>').text(response));
       /*
