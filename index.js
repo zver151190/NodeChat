@@ -71,6 +71,7 @@ mongodb.connect(uri, function(err, client) {
                   });
           
                 socket.on('disconnect', function() {
+                     socket.broadcast.to('dashboard').emit('onlineClient', 'user has left');
                     delete clients[socket.id];
                   });
          
