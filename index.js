@@ -40,7 +40,7 @@ mongodb.connect(uri, function(err, client) {
                    console.log('online Client');
                  }
           
-                 socket.emit('onlineClient',clients[socket.id]);
+                 socket.emit('onlineClient',socket.id);
                  
                  socket.emit('userInfo',result);
 
