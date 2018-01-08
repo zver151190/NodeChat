@@ -6,6 +6,16 @@
     </style>
   </head>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+  $(function () {
+    var socket = io();
+    
+    socket.on('dashboardStatus', function(msg){
+      $('body').append($('<h1>').text(msg));
+    });
+  });
+</script>
+
   <body>
 
   </body>
