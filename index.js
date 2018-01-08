@@ -23,11 +23,21 @@ app.get('/', function(req, res){
            result = {username:username,email:email,user_id:user_id};         
 });
 
+app.get('/dashboard', function(req, res){
+         res.sendFile(__dirname + '/views/pages/dashboard.html');
+           key = req.query.k;
+           username = req.query.username;
+           email = req.query.email;
+           user_id = req.query.user_id;
+           result = {username:username,email:email,user_id:user_id};         
+});
+
 
 mongodb.connect(uri, function(err, client) {
         io.on('connection', function(socket){
                  clients[socket.id] = socket;
                  socket.emit('userInfo',result);
+                 socket.emit('dashboardStatus','online');
                   socket.on('startUserChat', function (userId) { 
                       const db = client.db('nodejs');
                       db.collection("chat").find({user_id:userId}).toArray(function(err, result) {
