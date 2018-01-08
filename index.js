@@ -39,31 +39,23 @@ mongodb.connect(uri, function(err, client) {
               socket.join(room);
            });
           
-          
-          
-          
-                 clients[socket.id] = socket;
+           clients[socket.id] = socket;
                
-                 if(isClient){
-                   //socket.join('chat');
-                   client_arr[client_arr.length]= {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
-                   socket.to('dashboard').emit('onlineClient', 'user has joined '+socket.id);
-                 }else{
-                    //socket.join('dashboard');
-                 }
+            if(isClient){
+                client_arr[client_arr.length]= {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
+                socket.to('dashboard').emit('onlineClient', 'user has joined '+socket.id);
+             }
           
-                 socket.emit('onlineClient',socket.id);
-                 
-                 socket.emit('userInfo',result);
+            socket.emit('userInfo',result);
 
-                  socket.on('startUserChat', function (userId) { 
-                      const db = client.db('nodejs');
-                      db.collection("chat").find({user_id:userId}).toArray(function(err, result) {
+            socket.on('startUserChat', function (userId) { 
+                 const db = client.db('nodejs');
+                 db.collection("chat").find({user_id:userId}).toArray(function(err, result) {
                         socket.emit('renderChat',result); 
-                      });
-                   });
+                  });
+             });
 
-                  socket.on('sendMessage', function (data) {
+             socket.on('sendMessage', function (data) {
                     const db = client.db('nodejs');
                     var user_id = data.user_id;
                     var email = data.email;
@@ -75,17 +67,13 @@ mongodb.connect(uri, function(err, client) {
                     db.collection("chat").update( {user_id:user_id},{$push:{messages:{ user_id: user_id,creation_time:timestamp, username: username,email:email,message:message,type:"user" }}} );
                     socket.emit('sendMessageResponse',update_obj);
                     socket.to('dashboard').emit('onlineClient', 'user sent message');
-                  });
+              });
           
-                socket.on('disconnect', function() {
-                  if(isClient){
-                     socket.to('dashboard').emit('onlineClient', 'user has left '+socket.id);
-                  }
-                    delete clients[socket.id]; 
-                  });
-         
-          });
- 
+             socket.on('disconnect', function() {
+                socket.to('dashboard').emit('onlineClient', 'user has left '+socket.id);
+                delete clients[socket.id]; 
+             });
+       });
 });
 server.listen(process.env.PORT || 5000);
 
