@@ -38,7 +38,7 @@ mongodb.connect(uri, function(err, client) {
                  if(isClient){
                    socket.join('chat');
                    client_arr[client_arr.length]= {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
-                   socket.broadcast.to('dashboard').emit('onlineClient', 'user has joined');
+                   socket.broadcast.to('dashboard').emit('onlineClient', 'user has joined '+socket.id);
                  }else{
                     socket.join('dashboard');
                  }
@@ -70,7 +70,7 @@ mongodb.connect(uri, function(err, client) {
           
                 socket.on('disconnect', function() {
                   if(isClient){
-                     socket.broadcast.to('dashboard').emit('onlineClient', 'user has left');
+                     socket.broadcast.to('dashboard').emit('onlineClient', 'user has left '+socket.id);
                   }
                     delete clients[socket.id];
                   });
