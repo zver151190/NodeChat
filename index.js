@@ -38,10 +38,11 @@ mongodb.connect(uri, function(err, client) {
            socket.on('room', function(room) {
               socket.join(room);
            });
-          
-           clients[socket.id] = socket;
-           var online_client = {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
-           socket.to('dashboard').emit('onlineClient',online_client);
+          if(isClient){
+            clients[socket.id] = socket;
+            var online_client = {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
+            socket.to('dashboard').emit('onlineClient',online_client);
+          }
           
             socket.emit('userInfo',result);
 
