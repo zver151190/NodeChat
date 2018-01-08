@@ -25,6 +25,9 @@
         $('button[data-id="'+response.user_id+'"]').text(response.username+' is online');
       }
     });
+    socket.on('clietSentMessage', function(response){
+       $('button[data-id="'+response.user_id+'"]').text(response.username+' sent message');
+    });
     socket.on('offlineClient', function(response){
         $('button[data-id="'+response.user_id+'"]').text("user left");
     });
