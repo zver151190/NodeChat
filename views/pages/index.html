@@ -147,6 +147,13 @@
     var user_username;
     var user_email;
     var user_userId;
+    var room = "chat";
+    
+    socket.on('connect', function() {
+      socket.emit('room', room);
+    });
+    
+    
     socket.on('userInfo', function(result){
       user_username = result.username;
       user_email = result.email;
