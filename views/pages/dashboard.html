@@ -18,14 +18,11 @@
     });
 
     socket.on('onlineClient', function(response){
-      $('body').append($('<h1>').text(response));
-      /*
-      $.each(response,function(index,value){
-        var button = '<button data-id="'+value.user_id+'">'+value.username+' is online</button>';
+        var button = '<button data-id="'+response.user_id+'">'+response.username+' is online</button>';
         $('body').append(button);
-      });
-      */
-      
+    });
+    socket.on('offlineClient', function(response){
+        $('button[data-id="'+response.user_id+'"]').text("user left");
     });
   
   });
