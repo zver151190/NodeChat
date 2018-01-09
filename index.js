@@ -43,6 +43,7 @@ mongodb.connect(uri, function(err, client) {
             var online_client = {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
             var clientExists = false;
             for( i = 0; i < client_arr.length ; i++ ){
+              console.log("CHECK "+client_arr[i].user_id+'-----'+result.user_id);
                if(client_arr[i].user_id == result.user_id ){
                  clientExists = true;
                }
