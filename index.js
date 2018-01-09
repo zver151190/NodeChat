@@ -22,7 +22,7 @@ app.get('/', function(req, res){
 });
 
   io.on('connection', function(socket){
-     console.log(' %s sockets connected', io.engine.clientsCount);
+     console.log(' %s sockets connected', io.sockets.sockets.length);
      socket.on('room', function(room) {
               //socket.join(room);
               clients[socket.id] = socket;
@@ -31,6 +31,7 @@ app.get('/', function(req, res){
           
       socket.on('disconnect', function() {
           console.log("disconnect---"+socket.id);
+          console.log(' %s sockets connected', io.sockets.sockets.length);
           delete clients[socket.id];
       });
   });
