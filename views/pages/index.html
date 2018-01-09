@@ -5,45 +5,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
-  function initClient() {
-      connectClient();
-    }
-
-   function connectClient() {
+  $(document).ready(function(){
       var socket = io();
-
-      socket.on('connect', function (e) {
-          routesClient(socket);
-      });
-
-      socket.on("connect_error", function(e){
-            reconnectionTry++;
-            console.log("Reconnection attempt #"+reconnectionTry);
-       });
-
-      return false;
-    }
-
-    function routesClient(socket){
-      console.log('connected');
       socket.on('test', function (e) {
         console.log(e);
         socket.emit("test", "pong");
       });
-
-      socket.on('disconnect', function () {
-        socket.disconnect();
-        console.log("client disconnected");
-        if(reconnection === true) {
-                setTimeout(function () {
-                        console.log("client trying reconnect");
-                        connectClient();
-                    }, reconnectionDelay);
-            }
-      });
-
-      return false;
-    }
+   });
   
   </script>  
   </head>
