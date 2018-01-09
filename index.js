@@ -17,7 +17,7 @@ app.get('/', function(req, res){
            var key = req.query.k;
            var username = req.query.username;
            var email = req.query.email;
-           var isClient = true;
+           isClient = true;
            var user_id = req.query.user_id;
            result = {username:username,email:email,user_id:user_id};         
 });
