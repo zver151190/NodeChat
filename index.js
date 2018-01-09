@@ -47,8 +47,10 @@ mongodb.connect(uri, function(err, client) {
 			  var clientExists = false;
 		          var exists = false;
 		          for(i = 0 ; i < client_arr.length ; i++ ){
-			    if( client_arr[i].user_id == result.user_id ){
-			       exists = true;
+			    if( client_arr[i] !== null && client_arr[i] !== undefined ){	  
+				    if( client_arr[i].user_id == result.user_id ){
+				       exists = true;
+				    }
 			    }
 			  }
 		  
