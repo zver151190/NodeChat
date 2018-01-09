@@ -153,7 +153,7 @@
     });
     
     socket.on('disconnect', function(data) {
-        socket.emit('disconnect', {user_id:user_userId});
+        socket.emit('disconnectEvent', {user_id:user_userId});
     });
     
     
