@@ -41,7 +41,7 @@ mongodb.connect(uri, function(err, client) {
           if(isClient){
             clients[socket.id] = socket;
             var online_client = {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
-            client_arr[socket.id] = online_client;
+            client_arr.push(online_client);
             socket.to('dashboard').emit('onlineClient',online_client);
           }
           
@@ -74,8 +74,13 @@ mongodb.connect(uri, function(err, client) {
           
              socket.on('disconnect', function() {
                 socket.to('dashboard').emit('offlineClient',online_client);
-                delete clients[socket.id]; 
-                delete client_arr[socket.id]; 
+                delete clients[socket.id];
+                for(i = 0 ; i < client_arr.length ; i++ ){
+                   if( client_arr[i].client_id = socket.id ){
+                      delete client_arr[i]; 
+                   }
+                }
+                
              });
        });
 }); 
