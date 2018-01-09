@@ -70,7 +70,7 @@ mongodb.connect(uri, function(err, client) {
           
            socket.on('checkOnlineClients', function (data) {
                 socket.emit('checkOnlineClients',client_arr); 
-            );
+	   });
           
              socket.on('sendMessage', function (data) {
                     const db = client.db('nodejs');
