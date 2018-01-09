@@ -90,14 +90,14 @@ mongodb.connect(uri, function(err, client) {
           
              socket.on('disconnect', function() {
                 socket.to('dashboard').emit('offlineClient',online_client);
-                delete clients[socket.id];
-		try{     
-			for(i = 0 ; i < client_arr.length ; i++ ){
-			if( client_arr[i].user_id == result.user_id ){
-				delete client_arr[i];
-			     }
-			  }
-		}catch(err){}
+                delete clients[socket.id];    
+		for(i = 0 ; i < client_arr.length ; i++ ){
+			if( client_arr[i] !== null && client_arr[i] !== undefined ){
+				if( client_arr[i].user_id == result.user_id ){
+					delete client_arr[i];
+				}
+			}
+		}
              });
        });
 	   
