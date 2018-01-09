@@ -9,7 +9,7 @@ app.get('/', function(req, res){
 
 var clients = {};
 
-io.sockets.on('connection', function (socket) {
+io.on('connection', function (socket) {
   clients[socket.id] = socket;
   
   console.log('a user connected: ' + socket.id);
