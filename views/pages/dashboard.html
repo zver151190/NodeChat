@@ -19,7 +19,12 @@
     });
     
     socket.on('checkOnlineClients', function(response) {
-      console.log(response);
+      $.each(response,function(index,value){
+          var button = '<button data-id="'+value.user_id+'">'+value.username+' is online</button>';
+          if($('button[data-id="'+value.user_id+'"]').length == 0 ){  
+            $('body').append(button);
+          }
+      });
     });
     
     
