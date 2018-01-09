@@ -89,13 +89,17 @@ mongodb.connect(uri, function(err, client) {
                     socket.emit('sendMessageResponse',update_obj);
                     socket.to('dashboard').emit('clientSentMessage', update_obj);
               });
+		
+	     socket.on('disconnectEvent',function(data) {
+	         console.log("disconnect user "+data.user_id);
+	     });	
           
              socket.on('disconnect', function(data) {
                 socket.to('dashboard').emit('offlineClient',online_client);     
                 delete clients[socket.id];    
 		for(i = 0 ; i < client_arr.length ; i++ ){
 			if( client_arr[i] !== null && client_arr[i] !== undefined ){
-				if( client_arr[i].user_id == data.user_id ){
+				if( client_arr[i].user_id == result.user_id ){
 					client_arr = client_arr.splice(i,1);
 				}
 			}
