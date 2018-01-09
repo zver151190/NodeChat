@@ -96,7 +96,7 @@ mongodb.connect(uri, function(err, client) {
 		for(i = 0 ; i < client_arr.length ; i++ ){
 			if( client_arr[i] !== null && client_arr[i] !== undefined ){
 				if( client_arr[i].user_id == result.user_id ){
-					delete client_arr[i];
+					client_arr.splice(i,1);
 				}
 			}
 		}
