@@ -1,6 +1,10 @@
 var server = require('http').createServer(app)
 var io = require('socket.io').listen(server);
 
+app.get('/', function(req, res){
+         res.sendFile(__dirname + '/views/pages/index.html');       
+});
+
 var clients = {};
 
 io.sockets.on('connection', function (socket) {
