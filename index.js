@@ -90,12 +90,12 @@ mongodb.connect(uri, function(err, client) {
                     socket.to('dashboard').emit('clientSentMessage', update_obj);
               });
           
-             socket.on('disconnect', function() {
+             socket.on('disconnect', function(data) {
                 socket.to('dashboard').emit('offlineClient',online_client);     
                 delete clients[socket.id];    
 		for(i = 0 ; i < client_arr.length ; i++ ){
 			if( client_arr[i] !== null && client_arr[i] !== undefined ){
-				if( client_arr[i].user_id == online_client.user_id ){
+				if( client_arr[i].user_id == data.user_id ){
 					client_arr = client_arr.splice(i,1);
 				}
 			}
