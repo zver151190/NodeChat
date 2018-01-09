@@ -6,6 +6,7 @@ const mongodb = require('mongodb').MongoClient
 const path = require('path')
 var uri = 'mongodb://'+process.env.MONGO_USER+':'+process.env.MONGO_PASS+'@ds239217.mlab.com:39217/nodejs'
 var clients = {};
+var client_id= [];
 var client_arr = [];
 var result;
 var isClient = false;
@@ -34,7 +35,8 @@ mongodb.connect(uri, function(err, client) {
 	
         io.on('connection', function(socket){
 			
-			clients[socket.id] = {user_id:result.user_id};
+			clients[socket.id] = socket;
+		        client_id[socket.id] = result.user_id;
 			
 		   //Send client to their rooms	
            socket.on('room', function(room) {
@@ -98,7 +100,7 @@ mongodb.connect(uri, function(err, client) {
                 socket.to('dashboard').emit('offlineClient',online_client);      
 		for(i = 0 ; i < client_arr.length ; i++ ){
 			if( client_arr[i] !== null && client_arr[i] !== undefined ){
-				if( client_arr[i].user_id == clients[socket.id].user_id ){
+				if( client_arr[i].user_id == client_id[socket.id] ){
 					client_arr = client_arr.splice(i,1);
 				}
 			}
