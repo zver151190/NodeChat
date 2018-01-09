@@ -75,6 +75,9 @@ mongodb.connect(uri, function(err, client) {
              socket.on('disconnect', function() {
                 socket.to('dashboard').emit('offlineClient',online_client);
                 delete clients[socket.id];
+               for(i=0;i<client_arr.length;i++){
+                  console.log(client_arr[i]+'----'+socket.id);
+               }
              });
        });
 }); 
