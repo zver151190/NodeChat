@@ -24,7 +24,7 @@ app.get('/', function(req, res){
   io.on('connection', function(socket){
      console.log(' %s sockets connected', io.engine.clientsCount);
      socket.on('room', function(room) {
-              socket.join(room);
+              //socket.join(room);
               clients[socket.id] = socket;
               console.log("connect---"+socket.id);
       });
