@@ -30,7 +30,7 @@ app.get('/dashboard', function(req, res){
 
 mongodb.connect(uri, function(err, client) {
 	
-	
+	const db = client.db('nodejs');
 	
 	
         io.on('connection', function(socket){
@@ -64,12 +64,12 @@ mongodb.connect(uri, function(err, client) {
 			       client_arr.push(online_client);
 			   }
 			  socket.to('dashboard').emit('onlineClient',online_client);
+		          db.collection("chat").update( {user_id:online_client.user_id},{$set: {status:"online"}});
           }
           
           socket.emit('userInfo',result);
 
           socket.on('startUserChat', function (userId) { 
-                const db = client.db('nodejs');
                 db.collection("chat").find({user_id:userId}).toArray(function(err, result) {
                      socket.emit('renderChat',result); 
                 });
@@ -80,7 +80,6 @@ mongodb.connect(uri, function(err, client) {
 	   });
           
              socket.on('sendMessage', function (data) {
-                    const db = client.db('nodejs');
                     var user_id = data.user_id;
                     var email = data.email;
                     var username = data.username;
@@ -98,14 +97,8 @@ mongodb.connect(uri, function(err, client) {
 	     });	
           
              socket.on('disconnect', function(data) {
-                socket.to('dashboard').emit('offlineClient',online_client);      
-		for(i = 0 ; i < client_arr.length ; i++ ){
-			if( client_arr[i] !== null && client_arr[i] !== undefined ){
-				if( client_arr[i].user_id == client_id[socket.id] ){
-					client_arr = client_arr.splice(i,1);
-				}
-			}
-		}
+		db.collection("chat").update( {user_id:online_client.user_id},{$set: {status:"offline"}});     
+                socket.to('dashboard').emit('offlineClient',online_client);
 	        delete clients[socket.id];
              });
        });
