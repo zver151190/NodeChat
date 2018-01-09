@@ -55,7 +55,7 @@ mongodb.connect(uri, function(err, client) {
              });
 
              socket.on('checkOnlineClients', function (data) {
-                  socket.to('dashboard').emit('checkOnlineClients',client_arr); 
+                  socket.emit('checkOnlineClients',client_arr); 
              });
           
              socket.on('sendMessage', function (data) {
