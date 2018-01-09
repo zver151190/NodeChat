@@ -46,7 +46,16 @@ mongodb.connect(uri, function(err, client) {
 			  var online_client = {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
 			  var clientExists = false;
 		          client_arr.push(online_client);
-		          console.log("send client--"+online_client.username);
+		          var exists = false;
+		          for(i = 0 ; i < client_arr.length ; i++ ){
+			    if( client_arr[i].user_id == result.user_id ){
+			       exists = true;
+			    }
+			  }
+		  
+		           if(exists){
+		              console.log("client exists--"+result.username);
+			   }
 			  socket.to('dashboard').emit('onlineClient',online_client);
           }
           
