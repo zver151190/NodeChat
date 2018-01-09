@@ -64,7 +64,7 @@ mongodb.connect(uri, function(err, client) {
 			       client_arr.push(online_client);
 			   }
 			  socket.to('dashboard').emit('onlineClient',online_client);
-		          db.collection("chat").update( {user_id:online_client.user_id},{$set: {status:"online"}});
+		          db.collection("users").update( {user_id:online_client.user_id},{$set: {status:"online"}});
           }
           
           socket.emit('userInfo',result);
@@ -97,7 +97,7 @@ mongodb.connect(uri, function(err, client) {
 	     });	
           
              socket.on('disconnect', function(data) {
-		db.collection("chat").update( {user_id:online_client.user_id},{$set: {status:"offline"}});     
+		db.collection("users").update( {user_id:online_client.user_id},{$set: {status:"offline"}});     
                 socket.to('dashboard').emit('offlineClient',online_client);
 	        delete clients[socket.id];
              });
