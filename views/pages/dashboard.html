@@ -15,8 +15,14 @@
     
     socket.on('connect', function() {
       socket.emit('room', room);
+      socket.emit('checkOnlineClients', 'true');
     });
-
+    
+    socket.on('checkOnlineClients', function(response) {
+      console.log(response);
+    });
+    
+    
     socket.on('onlineClient', function(response){
         var button = '<button data-id="'+response.user_id+'">'+response.username+' is online</button>';
       if($('button[data-id="'+response.user_id+'"]').length == 0 ){  
