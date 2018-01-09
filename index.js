@@ -4,7 +4,7 @@ var server = require('http').createServer(app)
 var io = require('socket.io').listen(server)
 const mongodb = require('mongodb').MongoClient
 const path = require('path')
-var uri = 'mongodb://admin:0543982262@ds239217.mlab.com:39217/nodejs'
+var uri = 'mongodb://'+process.env.MONGO_USER+':'+process.env.MONGO_PASS+'@ds239217.mlab.com:39217/nodejs'
 var clients = {};
 var client_arr = {};
 var key;
