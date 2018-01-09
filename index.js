@@ -36,7 +36,7 @@ mongodb.connect(uri, function(err, client) {
         io.on('connection', function(socket){
 			
 			clients[socket.id] = socket;
-		        client_id[socket.id] = result.user_id;
+		        
 			
 		   //Send client to their rooms	
            socket.on('room', function(room) {
@@ -45,6 +45,7 @@ mongodb.connect(uri, function(err, client) {
 		   
 		  //If client is not support we need to save his data for future use 
           if(isClient){
+		          client_id[socket.id] = result.user_id;
 			  var online_client = {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
 			  var clientExists = false;
 		          var exists = false;
