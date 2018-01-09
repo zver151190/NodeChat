@@ -118,49 +118,6 @@
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-<script>
-  function initClient() {
-      connectClient();
-    }
-
-   function connectClient() {
-      var socket = io();
-
-      socket.on('connect', function (e) {
-          routesClient(socket);
-      });
-
-      socket.on("connect_error", function(e){
-            reconnectionTry++;
-            console.log("Reconnection attempt #"+reconnectionTry);
-       });
-
-      return false;
-    }
-
-    function routesClient(socket){
-      console.log('connected');
-      socket.on('test', function (e) {
-        console.log(e);
-        socket.emit("test", "pong");
-      });
-
-      socket.on('disconnect', function () {
-        socket.disconnect();
-        console.log("client disconnected");
-        if(reconnection === true) {
-                setTimeout(function () {
-                        console.log("client trying reconnect");
-                        connectClient();
-                    }, reconnectionDelay);
-            }
-      });
-
-      return false;
-    }
-  
-  </script>  
-  
   <script>
   
   function startUserChat(socket,client_id){
@@ -172,7 +129,7 @@
         socket.emit('sendMessage', data);
     } 
   $(function () {
-    var socket = io({transports: ['websocket'], upgrade: false});
+    var socket = io();
     
     socket.on('chat message', function(msg){
       $('#messages').append($('<li>').text(msg));
