@@ -34,7 +34,7 @@ mongodb.connect(uri, function(err, client) {
 	
         io.on('connection', function(socket){
 			
-			clients[socket.id] = socket;
+			clients[socket.id] = {user_id:result.user_id};
 			
 		   //Send client to their rooms	
            socket.on('room', function(room) {
@@ -95,15 +95,15 @@ mongodb.connect(uri, function(err, client) {
 	     });	
           
              socket.on('disconnect', function(data) {
-                socket.to('dashboard').emit('offlineClient',online_client);     
-                delete clients[socket.id];    
+                socket.to('dashboard').emit('offlineClient',online_client);      
 		for(i = 0 ; i < client_arr.length ; i++ ){
 			if( client_arr[i] !== null && client_arr[i] !== undefined ){
-				if( client_arr[i].user_id == result.user_id ){
+				if( client_arr[i].user_id == clients[socket.id].user_id ){
 					client_arr = client_arr.splice(i,1);
 				}
 			}
 		}
+	        delete clients[socket.id];
              });
        });
 	   
