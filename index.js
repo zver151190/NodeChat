@@ -97,7 +97,7 @@ mongodb.connect(uri, function(err, client) {
 	     });	
           
              socket.on('disconnect', function(data) {
-		db.collection("users").update( {user_id:result.user_id},{$set: {status:"offline"}});     
+		db.collection("users").update( {user_id:client_id[socket.id]},{$set: {status:"offline"}});     
                 socket.to('dashboard').emit('offlineClient',online_client);
 	        delete clients[socket.id];
              });
