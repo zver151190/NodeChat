@@ -41,6 +41,7 @@ mongodb.connect(uri, function(err, client) {
           if(isClient){
             clients[socket.id] = socket;
             var online_client = {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
+            client_arr.push(online_client);
             socket.to('dashboard').emit('onlineClient',online_client);
           }
           
@@ -53,6 +54,10 @@ mongodb.connect(uri, function(err, client) {
                   });
              });
 
+             socket.on('checkOnlineClients', function (data) {
+                  socket.emit('checkOnlineClients',client_arr); 
+             });
+          
              socket.on('sendMessage', function (data) {
                     const db = client.db('nodejs');
                     var user_id = data.user_id;
