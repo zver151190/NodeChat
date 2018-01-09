@@ -152,6 +152,10 @@
       socket.emit('room', room);
     });
     
+    socket.on('disconnect', function(data) {
+        socket.emit('disconnect', {user_id:user_userId});
+    });
+    
     
     socket.on('userInfo', function(result){
       user_username = result.username;
