@@ -10,7 +10,7 @@
 <script>
   
   $(document).ready(function(){
-    var socket = io();
+    var socket = io({transports: ['websocket'], upgrade: false});
     var room = "dashboard";
     
     socket.on('connect', function() {
