@@ -10,10 +10,9 @@
         var url_string = window.location.href; //window.location.href
         var url = new URL(url_string);
         var username = url.searchParams.get("username");
-        socket.emit('new user','username');
+        socket.emit('new user',username);
          
          function sendMessage(){
-            alert('message');
             socket.emit('send message',$('input').val());
             $('input').val('');
          }
@@ -32,7 +31,7 @@
     </script>
     <body>
       <input type="text"></input>
-      <button onclcick="sendMessage()">Send</button>
+      <button onclick="sendMessage()">Send</button>
       <div id="userdiv"></div>
     </body>
 </html>
