@@ -10,6 +10,10 @@
         var url_string = window.location.href; //window.location.href
         var url = new URL(url_string);
         var username = url.searchParams.get("username");
+        
+        var room = "chatroom";
+	      socket.emit('room', room);
+        
         socket.emit('new user',username);
          
          $('#s').click(function(){
