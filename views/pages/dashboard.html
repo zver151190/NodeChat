@@ -13,6 +13,10 @@
 		socket.emit('room', room);
 		socket.emit('checkOnlineClients', 'true');
 	});
+	 
+	socket.on('dashOnline', function(data) {
+		console.log(data);
+	});
 	
 	socket.on('checkOnlineClients', function(response) {
 		console.log(response);
