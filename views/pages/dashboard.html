@@ -10,6 +10,8 @@
 	var socket = io.connect();
 	var room = "dashboard";
 	 
+	socket.emit('room', room);
+	 
 	socket.on('usernames',function(data){
          console.log(data);
           for( i = 0 ; i < data.length ; i++ )
