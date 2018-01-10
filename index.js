@@ -26,6 +26,7 @@ mongodb.connect(uri, function(err, client) {
 }); 
 	
 io.sockets.on( 'connection' , function(socket){
+	
    //Asign to room
    socket.on('room', function(room) {
           socket.join(room);
@@ -33,30 +34,25 @@ io.sockets.on( 'connection' , function(socket){
 	
 	
    socket.on( 'new user' , function(data,callback){
-	 if(usernames.indexOf(data) != -1 ){
-	    callback(false);
-	 }else{
 	    callback(true);
             socket.username = data;
 	    usernames.push(socket.username);
             updateUsernames();
-	 }  
    });
 	
    socket.on('getOnlineUsers',function(data){
           socket.to('dashboard').emit('usernames', usernames );
-	   console.log('getOnlineUsers');
     });
    
    //Update Usernames
    function updateUsernames(){
-		socket.to('chatroom').emit('usernames', usernames );
-	   	socket.to('dashboard').emit('usernames', usernames );
+	socket.emit('usernames', usernames );
+	socket.to('dashboard').emit('usernames', usernames );
    }
    
    //Send Message
    socket.on('send message',function(data){
-	socket.to('chatroom').emit('new message',{msg:data,user:socket.username});   
+	socket.emit('new message',{msg:data,user:socket.username});   
    });
    
    
