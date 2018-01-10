@@ -27,11 +27,9 @@ mongodb.connect(uri, function(err, client) {
 	
 io.sockets.on( 'connection' , function(socket){
    
-   socket.on( 'new user' , function(data,callback){
+   socket.on( 'new user' , function(data){
 	if(usernames.indexOf(data) != -1){
-		callback(false);
 	}else{
-		callback(true);
 		socket.username = data;
 		usernames.push(socket.username);
 		updateUsernames();
