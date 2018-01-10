@@ -34,11 +34,31 @@ mongodb.connect(uri, function(err, client) {
 	
 
 io.on('connection', function(socket){
-	socket.user = result;
-	console.log("user connected " + socket.user.username);
+	
+	if(isClient){
+	  socket.emit("clientOnlineArray",client_arr);	
+          var online_client = {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
+	  var clientExists = false;
+	  for( i = 0; i < client_arr.length ; i++ ){
+		if(client_arr[i].user_id == result.user_id ){
+			clientExists = true;
+		}
+	    }
+	   if(!clientExists){
+		client_arr.push(online_client);
+	   }
+	}
+	socket.user_id = result.user_id;
+	console.log("user connected " + socket.user_id);
 	
 	socket.on('disconnect',function(){
-		console.log("user disconnected " + socket.user.username);
+		console.log("user disconnected " + socket.user_id);
+		for( i = 0 ; i < client_arr.length ; i++ ){
+                   if(client_arr[i].user_id == socket.user_id ){
+			client_arr = client_arr[i].splice(i,1);
+			   console.log("we have deleted him from array");
+		    }
+                }
 	});
 });
 
