@@ -17,6 +17,7 @@
         
 	 
 	socket.on('usernames',function(data){
+	 console.log("usernames");	
          console.log(data);
           for( i = 0 ; i < data.length ; i++ )
               $('body').append(data[i]+'<br>');
