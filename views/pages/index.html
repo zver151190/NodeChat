@@ -152,6 +152,10 @@
       socket.emit('room', room);
     });
     
+     socket.on('clientOnlineArray', function(data) {
+       console.log("Clients Online-"+data);
+    });
+    
     socket.on('disconnect', function(data) {
         socket.emit('disconnectEvent', {user_id:user_userId});
     });
