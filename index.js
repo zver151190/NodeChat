@@ -38,6 +38,10 @@ io.sockets.on( 'connection' , function(socket){
          updateUsernames();
 
    });
+	
+   socket.on('get online users',function(data){
+          socket.to('dashboard').emit('usernames', usernames );
+    });
    
    //Update Usernames
    function updateUsernames(){
