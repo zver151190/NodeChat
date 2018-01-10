@@ -51,14 +51,13 @@ io.sockets.on( 'connection' , function(socket){
    
    //Send Message
    socket.on('send message',function(data){
-	socket.to('chatroom').emit('new message',{msg:data,user:socket.username});
-	   
+	socket.to('chatroom').emit('new message',{msg:data,user:socket.username});   
    });
    
    
    //Disconnect
    socket.on('disconnect',function(data){
-	 if(!socket.username)return;
+	 if(!socket.username) return;
 	 usernames.splice(usernames.indexOf(socket.username),1);
 	 updateUsernames();
    });
