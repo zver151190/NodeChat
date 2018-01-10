@@ -12,10 +12,10 @@
         var username = url.searchParams.get("username");
         socket.emit('new user',username);
          
-         function sendMessage(){
+         $('#s').click(function(){
             socket.emit('send message',$('input').val());
             $('input').val('');
-         }
+         });
         
         socket.on('new message',function(data){
           $('body').append('<strong>'+data.user+'</strong>'+data.msg+'<br>');
@@ -31,7 +31,7 @@
     </script>
     <body>
       <input type="text"></input>
-      <button onclick="sendMessage()">Send</button>
+      <button id="s" onclick="sendMessage()">Send</button>
       <div id="userdiv"></div>
     </body>
 </html>
