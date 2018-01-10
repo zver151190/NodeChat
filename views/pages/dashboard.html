@@ -9,10 +9,12 @@
  $(document).ready(function(){
 	var socket = io.connect();
 	var room = "dashboard";
-	 
-	socket.emit('room', room);
-	 
-        socket.emit('get online users', 'true');
+	socket.on('connect', function() {
+	        socket.emit('room', room);
+		socket.emit('get online users', 'true');
+		console.log("connected");
+	});  
+        
 	 
 	socket.on('usernames',function(data){
          console.log(data);
