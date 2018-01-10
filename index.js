@@ -60,9 +60,10 @@ io.on('connection', function(socket){
 			   if(client_arr[i].user_id == socket.user_id ){
 				client_arr = client_arr.splice(i,1);
 				   console.log("we have deleted him from array");
-				   socket.emit("dashOnline",client_arr);
 			    }
 			}
+			socket.emit("dashOnline",'user deleted');
+			socket.emit("dashOnline",client_arr);
 		});
 	}
 });
