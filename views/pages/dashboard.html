@@ -12,6 +12,8 @@
 	 
 	socket.emit('room', room);
 	 
+        socket.emit('get online users', 'true');
+	 
 	socket.on('usernames',function(data){
          console.log(data);
           for( i = 0 ; i < data.length ; i++ )
