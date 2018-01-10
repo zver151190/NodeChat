@@ -10,7 +10,7 @@ var client_id= [];
 var client_arr = [];
 var result;
 var isClient = false;
-
+const db;
 app.use(express.static(path.join(__dirname, 'public')))
   
 app.get('/', function(req, res){
@@ -29,84 +29,14 @@ app.get('/dashboard', function(req, res){
 
 
 mongodb.connect(uri, function(err, client) {
-	
-	const db = client.db('nodejs');
-	
-	
-        io.on('connection', function(socket){
-			
-			clients[socket.id] = socket;
-		        
-			
-		   //Send client to their rooms	
-           socket.on('room', function(room) {
-              socket.join(room);
-           });
-		   
-		  //If client is not support we need to save his data for future use 
-          if(isClient){
-		          client_id[socket.id] = result.user_id;
-			  var online_client = {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
-			  var clientExists = false;
-		          var exists = false;
-		          for(i = 0 ; i < client_arr.length ; i++ ){
-			    if( client_arr[i] !== null && client_arr[i] !== undefined ){	  
-				    if( client_arr[i].user_id == result.user_id ){
-				       exists = true;
-				    }
-			    }
-			  }
-		  
-		           if(exists){
-		              console.log("client exists--"+result.username);
-			      exists = false;
-			   }else{
-			       client_arr.push(online_client);
-			   }
-			  socket.to('dashboard').emit('onlineClient',online_client);
-		          db.collection("users").update( {user_id:online_client.user_id},{$set: {status:"online"}});
-          }
-          
-          socket.emit('userInfo',result);
-
-          socket.on('startUserChat', function (userId) { 
-                db.collection("chat").find({user_id:userId}).toArray(function(err, result) {
-                     socket.emit('renderChat',result); 
-                });
-            });
-          
-           socket.on('checkOnlineClients', function (data) {
-                socket.emit('checkOnlineClients',client_arr); 
-	   });
-          
-             socket.on('sendMessage', function (data) {
-                    var user_id = data.user_id;
-                    var email = data.email;
-                    var username = data.username;
-                    var message = data.message;
-                    var d = new Date();
-                    var timestamp = d.getTime();
-                    var update_obj = { user_id: user_id,creation_time:timestamp, username: username,email:email,message:message,type:"user" };
-                    db.collection("chat").update( {user_id:user_id},{$push:{messages:{ user_id: user_id,creation_time:timestamp, username: username,email:email,message:message,type:"user" }}} );
-                    socket.emit('sendMessageResponse',update_obj);
-                    socket.to('dashboard').emit('clientSentMessage', update_obj);
-              });
-		
-	     socket.on('disconnectEvent',function(data) {
-	         console.log("disconnect user "+data.user_id);
-	     });	
-          
-             socket.on('disconnect', function(data) {
-		db.collection("users").update( {user_id:client_id[socket.id]},{$set: {status:"offline"}});     
-                socket.to('dashboard').emit('offlineClient',online_client);
-	        delete clients[socket.id];
-             });
-       });
-	   
-	   
-	   
-	   
+	db = client.db('nodejs');
 }); 
+	
+
+io.on('connection', function(socket){
+    	console.log("user connected");	
+});
+
 server.listen(process.env.PORT || 5000);
 
 
