@@ -39,8 +39,9 @@ io.sockets.on( 'connection' , function(socket){
 
    });
 	
-   socket.on('get online users',function(data){
+   socket.on('getOnlineUsers',function(data){
           socket.to('dashboard').emit('usernames', usernames );
+	   console.log('getOnlineUsers');
     });
    
    //Update Usernames
