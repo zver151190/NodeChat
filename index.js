@@ -35,7 +35,6 @@ mongodb.connect(uri, function(err, client) {
 io.on('connection', function(socket){
 	
 	if(isClient){
-	  socket.emit("clientOnlineArray",client_arr);	
           var online_client = {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
 	  var clientExists = false;
 	  for( i = 0; i < client_arr.length ; i++ ){
@@ -45,9 +44,11 @@ io.on('connection', function(socket){
 	    }
 	   if(!clientExists){
 		console.log("add user to array");   
-		client_arr.push(online_client);
+		client_arr.push(online_client);	
 	   }
-	
+	  socket.emit("clientOnlineArray",client_arr);
+		
+		
 		socket.user_id = result.user_id;
 		console.log("user connected " + socket.user_id);
 
