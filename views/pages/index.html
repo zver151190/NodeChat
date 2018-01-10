@@ -10,7 +10,6 @@
         var url_string = window.location.href; //window.location.href
         var url = new URL(url_string);
         var username = url.searchParams.get("username");
-        console.log(username);
         socket.emit('new user','username');
          
          function sendMessage(){
@@ -32,7 +31,7 @@
     </script>
     <body>
       <input type="text"></input>
-      <button>Send</button>
+      <button onclcick="sendMessage()">Send</button>
       <div id="userdiv" style="backround:red;color:white;"></div>
     </body>
 </html>
