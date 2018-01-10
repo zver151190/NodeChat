@@ -5,8 +5,8 @@
      <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <script>
-      $(function(){
-         var socket = io.connect();
+      $(document).ready(function(){
+        var socket = io.connect();
         var url_string = window.location.href; //window.location.href
         var url = new URL(url_string);
         var username = url.searchParams.get("username");
