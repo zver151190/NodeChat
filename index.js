@@ -26,7 +26,12 @@ mongodb.connect(uri, function(err, client) {
 }); 
 	
 io.sockets.on( 'connection' , function(socket){
-   
+   //Asign to room
+   socket.on('room', function(room) {
+          socket.join(room);
+   });
+	
+	
    socket.on( 'new user' , function(data){
          socket.username = data;
 	 usernames.push(socket.username);
@@ -36,12 +41,14 @@ io.sockets.on( 'connection' , function(socket){
    
    //Update Usernames
    function updateUsernames(){
-		io.sockets.emit('usernames', usernames );
+		socket.to('chatroom').emit('usernames', usernames );
+	   	socket.to('dashboard').emit('usernames',online_client);
    }
    
    //Send Message
    socket.on('send message',function(data){
-	io.sockets.emit('new message',{msg:data,user:socket.username});
+	socket.to('chatroom').emit('new message',{msg:data,user:socket.username});
+	   
    });
    
    
