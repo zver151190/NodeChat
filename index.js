@@ -44,6 +44,7 @@ io.on('connection', function(socket){
 		}
 	    }
 	   if(!clientExists){
+		console.log("add user to array");   
 		client_arr.push(online_client);
 	   }
 	
