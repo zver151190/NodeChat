@@ -14,7 +14,6 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.get('/', function(req, res){
            res.sendFile(__dirname + '/views/pages/index.html');
-	   var username = data.username;
 });
 
 app.get('/dashboard', function(req, res){
