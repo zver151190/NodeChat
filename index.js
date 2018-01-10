@@ -55,7 +55,7 @@ io.on('connection', function(socket){
 		console.log("user disconnected " + socket.user_id);
 		for( i = 0 ; i < client_arr.length ; i++ ){
                    if(client_arr[i].user_id == socket.user_id ){
-			client_arr = client_arr[i].splice(i,1);
+			client_arr = client_arr.splice(i,1);
 			   console.log("we have deleted him from array");
 		    }
                 }
