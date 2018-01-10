@@ -7,8 +7,11 @@
     <script>
       $(function(){
          var socket = io.connect();
-        
-        socket.emit('new user','artiom');
+        var url_string = window.location.href; //window.location.href
+        var url = new URL(url_string);
+        var username = url.searchParams.get("username");
+        console.log(username);
+        socket.emit('new user','username');
          
          function sendMessage(){
             socket.emit('send message',$('input').val());
