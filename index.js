@@ -32,11 +32,15 @@ io.sockets.on( 'connection' , function(socket){
    });
 	
 	
-   socket.on( 'new user' , function(data){
-         socket.username = data;
-	 usernames.push(socket.username);
-         updateUsernames();
-
+   socket.on( 'new user' , function(data,callback){
+	 if(usernames.indexOf(data) != -1 ){
+	    callback(false);
+	 }else{
+	    callback(true);
+            socket.username = data;
+	    usernames.push(socket.username);
+            updateUsernames();
+	 }  
    });
 	
    socket.on('getOnlineUsers',function(data){
