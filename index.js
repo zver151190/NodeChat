@@ -20,7 +20,7 @@ app.get('/', function(req, res){
            var email = req.query.email;
            isClient = true;
            var user_id = req.query.user_id;
-           result = {username:username,email:email,user_id:user_id};         
+           result = {username:username,email:email,user_id:user_id};
 });
 
 app.get('/dashboard', function(req, res){
@@ -32,7 +32,6 @@ mongodb.connect(uri, function(err, client) {
 	db = client.db('nodejs');
 }); 
 	
-
 io.on('connection', function(socket){
 	
 	if(isClient){
@@ -47,19 +46,20 @@ io.on('connection', function(socket){
 	   if(!clientExists){
 		client_arr.push(online_client);
 	   }
-	}
-	socket.user_id = result.user_id;
-	console.log("user connected " + socket.user_id);
 	
-	socket.on('disconnect',function(){
-		console.log("user disconnected " + socket.user_id);
-		for( i = 0 ; i < client_arr.length ; i++ ){
-                   if(client_arr[i].user_id == socket.user_id ){
-			client_arr = client_arr.splice(i,1);
-			   console.log("we have deleted him from array");
-		    }
-                }
-	});
+		socket.user_id = result.user_id;
+		console.log("user connected " + socket.user_id);
+
+		socket.on('disconnect',function(){
+			console.log("user disconnected " + socket.user_id);
+			for( i = 0 ; i < client_arr.length ; i++ ){
+			   if(client_arr[i].user_id == socket.user_id ){
+				client_arr = client_arr.splice(i,1);
+				   console.log("we have deleted him from array");
+			    }
+			}
+		});
+	}
 });
 
 server.listen(process.env.PORT || 5000);
