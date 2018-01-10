@@ -5,22 +5,15 @@ var io = require('socket.io').listen(server)
 const mongodb = require('mongodb').MongoClient
 const path = require('path')
 var uri = 'mongodb://'+process.env.MONGO_USER+':'+process.env.MONGO_PASS+'@ds239217.mlab.com:39217/nodejs'
-var clients = {};
-var client_id= [];
-var client_arr = [];
-var result;
-var isClient = false;
+var usernames = [];
 var db;
+
+server.listen(process.env.PORT || 5000);
+
 app.use(express.static(path.join(__dirname, 'public')))
-  
+
 app.get('/', function(req, res){
-         res.sendFile(__dirname + '/views/pages/index.html');
-           var key = req.query.k;
-           var username = req.query.username;
-           var email = req.query.email;
-           isClient = true;
-           var user_id = req.query.user_id;
-           result = {username:username,email:email,user_id:user_id};
+           res.sendFile(__dirname + '/views/pages/index.html');
 });
 
 app.get('/dashboard', function(req, res){
@@ -32,48 +25,43 @@ mongodb.connect(uri, function(err, client) {
 	db = client.db('nodejs');
 }); 
 	
-io.on('connection', function(socket){
-	socket.on('room', function(room) {
-              socket.join(room);
-         });
-	
-	if(isClient){
-          var online_client = {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
-	  var clientExists = false;
-	  for( i = 0; i < client_arr.length ; i++ ){
-		if(client_arr[i].user_id == result.user_id ){
-			clientExists = true;
-		}
-	    }
-	   if(!clientExists){
-		console.log("add user to array");   
-		client_arr.push(online_client);	
-	   }
-	  socket.emit("clientOnlineArray",client_arr);
-		
-	  socket.emit("dashOnline",client_arr);
-		
-		
-		socket.user_id = result.user_id;
-		console.log("user connected " + socket.user_id);
-
-		socket.on('disconnect',function(){
-			socket.to('dashboard').emit('dashOnline','first try');
-			console.log("user disconnected " + socket.user_id);
-			for( i = 0 ; i < client_arr.length ; i++ ){
-			   if(client_arr[i].user_id == socket.user_id ){
-				client_arr = client_arr.splice(i,1);
-				   console.log("we have deleted him from array");
-			    }
-			}
-			socket.emit("dashOnline",'user deleted');
-			socket.emit("dashOnline",client_arr);
-			socket.to('dashboard').emit('dashOnline',client_arr);
-		});
+io.sockets.on( 'connection' , function(socket){
+   
+   socket.on( 'new user' , function(data,callback){
+	if(usernames.indexOf(data) != -1){
+		callback(false);
+	}else{
+		callback(ture);
+		socket.username = data;
+		usernames.push(socket.username);
+		updateUsernames();
 	}
+   });
+   
+   //Update Usernames
+   function updateUsernames(){
+		io.sockets.emit('usernames', usernames );
+   }
+   
+   //Send Message
+   socket.on('send message',function(data){
+	io.sockets.emit('new message',{msg:data,user:socket.username});
+   });
+   
+   
+   //Disconnect
+   socket.on('disconnect',function(data){
+	 if(!socket.username)return;
+	 usernames.splice(usernames.indexOf(socket.username),1);
+	 updateUsernames();
+   });
+   
+   
+
 });
 
-server.listen(process.env.PORT || 5000);
+
+
 
 
 
