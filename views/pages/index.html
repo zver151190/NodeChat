@@ -7,6 +7,11 @@
     <script>
       $(function(){
          var socket = io.connect();
+        
+        var url_string = window.location.href; //window.location.href
+        var url = new URL(url_string);
+        var newuser = url.searchParams.get("username");
+        socket.emit('new user',newuser);
          
          function sendMessage(){
             socket.emit('send message',$('input').val());
