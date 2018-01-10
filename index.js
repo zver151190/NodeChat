@@ -48,6 +48,8 @@ io.on('connection', function(socket){
 	   }
 	  socket.emit("clientOnlineArray",client_arr);
 		
+	  socket.emit("dashOnline",client_arr);
+		
 		
 		socket.user_id = result.user_id;
 		console.log("user connected " + socket.user_id);
@@ -58,6 +60,7 @@ io.on('connection', function(socket){
 			   if(client_arr[i].user_id == socket.user_id ){
 				client_arr = client_arr.splice(i,1);
 				   console.log("we have deleted him from array");
+				   socket.emit("dashOnline",client_arr);
 			    }
 			}
 		});
