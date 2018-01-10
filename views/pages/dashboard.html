@@ -11,7 +11,7 @@
 	var room = "dashboard";
 	socket.on('connect', function() {
 	        socket.emit('room', room);
-		socket.emit('get online users', 'true');
+		socket.emit('getOnlineUsers', 'true');
 		console.log("connected");
 	});  
         
