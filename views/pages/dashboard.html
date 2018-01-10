@@ -7,42 +7,15 @@
  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
  <script>
  $(document).ready(function(){
-	var socket = io();
+	var socket = io.connect();
 	var room = "dashboard";
-	socket.on('connect', function() {
-		socket.emit('room', room);
-		socket.emit('checkOnlineClients', 'true');
-	});
 	 
-	socket.on('dashOnline', function(data) {
-		console.log(data);
-	});
+	socket.on('usernames',function(data){
+         console.log(data);
+          for( i = 0 ; i < data.length ; i++ )
+              $('body').append(data[i]+'<br>');
+        });
 	
-	socket.on('checkOnlineClients', function(response) {
-		console.log(response);
-		$.each(response,function(index,value){
-			var button = '<button data-id="'+value.user_id+'">'+value.username+' is online</button>';
-			if($('button[data-id="'+value.user_id+'"]').length == 0 ){  
-				$('body').append(button);
-			}
-		});
-	});
-
-	socket.on('onlineClient', function(response){
-		var button = '<button data-id="'+response.user_id+'">'+response.username+' is online</button>';
-		if($('button[data-id="'+response.user_id+'"]').length == 0 ){  
-			$('body').append(button);
-		}else{
-			$('button[data-id="'+response.user_id+'"]').text(response.username+' is online');
-		}
-	});
-
-	socket.on('clientSentMessage', function(response){
-		$('button[data-id="'+response.user_id+'"]').text(response.username+' sent message');
-	});
-	socket.on('offlineClient', function(response){
-		$('button[data-id="'+response.user_id+'"]').text("user left");
-	});
 });	 
 </script>
 <body> 
