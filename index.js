@@ -28,12 +28,10 @@ mongodb.connect(uri, function(err, client) {
 io.sockets.on( 'connection' , function(socket){
    
    socket.on( 'new user' , function(data){
-	if(usernames.indexOf(data) != -1){
-	}else{
-		socket.username = data;
-		usernames.push(socket.username);
-		updateUsernames();
-	}
+         socket.username = data;
+	 usernames.push(socket.username);
+         updateUsernames();
+
    });
    
    //Update Usernames
