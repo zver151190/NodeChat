@@ -13,6 +13,7 @@
         socket.emit('new user','username');
          
          function sendMessage(){
+            alert('message');
             socket.emit('send message',$('input').val());
             $('input').val('');
          }
