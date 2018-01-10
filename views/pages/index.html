@@ -2,252 +2,32 @@
 <html>
   <head>
     <title>Chat</title>
-    <style>
-      
-      #ms-text{
-        width: 100%;
-        display: inline-block;
-        font-size: 13px;
-      }
-        #chat-panel{
-          height:290px;
-          padding-bottom: 10px;
-          overflow-y: scroll;
-        }
-      
-        .chat-container {
-            width: 100%;
-            height: 100%;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-            box-shadow: 0px 0px 6px 1px #00000040;
-            position: absolute;
-            top: 0px;
-            right: 0px;
-            bottom: 0px;
-            left: 0px;
-            overflow: hidden;
-            border: 0px;
-            padding: 0px;
-            background: transparent;
-        }
-        #chat-header{
-            width: 100%;
-            background: #4CAF50;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-        }
-        #chat-header #welcome-message{
-            margin: 0px;
-            color: white;
-            text-align: center;
-            padding: 10px;
-        }
-        #chat-content{
-            padding:10px;
-        }
-        .chat-box {
-            min-height: 40px;
-            display: inline-block;
-            width: 100%;
-            margin-bottom: 5px;
-        }
-        #nm {
-            margin: 0px;
-            font-size: 14px;
-            display: block;
-            font-weight: bold;
-        }
-        #ms {
-            margin: 0px;
-            background: #efefef;
-            border-radius: 5px;
-            padding: 8px;
-            border: 1px solid #d8d8d8;
-            display: block;
-            max-width: 80%;
-        }
-        #ms-dt{
-            margin: 0px;
-            font-size: 12px;
-            display: block;
-            text-align: right;
-            color: grey;
-        }
-        #av-box {
-            height: 30px;
-            width: 13%;
-            display: block;
-            position: relative;
-            top: 8px;
-        }
-        #av-box img{height:100%;}
-        #conv-t-area{
-             width: 100%;
-            height: 100px;
-            padding: 5px;
-            display: block;
-            padding: 5px 5px;
-            border-top: 1px solid #e0dfdf;
-        }
-        #conv-t-area textarea{
-                width: 100%;
-                border-radius: 5px;
-        }
-        #conv-t-area button{
-            width:100%;
-            display:none;
-        }
-        .r-box #av-box{
-          float:right;
-          text-align: center;
-        }
-        .r-box #ms{
-          float:right;
-        }
+     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script>
+      $(function(){
+         var socket = io.connect();
+         
+         function sendMessage(){
+            socket.emit('send message',$('input').val());
+            $('input').val('';)
+         }
         
-        .l-box #av-box{
-          float:left;
-          text-align: center;
-        }
-        .l-box #ms{
-          float:left;
-        }
-    </style>
-  </head>
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-  <script>
-  
-  function startUserChat(socket,client_id){
-        socket.emit('startUserChat', client_id);
-    }
-  function sendMessage(socket,msg,user_id,username,email){
-        var data = {user_id:user_id,message:msg,username:username,email:email};
-        console.log(data);
-        socket.emit('sendMessage', data);
-    } 
-  $(function () {
-    var socket = io();
-    
-    socket.on('chat message', function(msg){
-      $('#messages').append($('<li>').text(msg));
-    });
-    socket.on('output', function(msg){
-      for( var i = 0; i < msg.length ; i++){
-         $('#messages').append($('<li>').text(msg[i].message));  
-      }
-      
-    });
-  });
-  $(document).ready(function(){
-    var socket = io();
-    var user_username;
-    var user_email;
-    var user_userId;
-    var room = "chat";
-    
-    socket.on('connect', function() {
-      socket.emit('room', room);
-    });
-    
-     socket.on('clientOnlineArray', function(data) {
-       console.log(data);
-    });
-    
-    socket.on('disconnect', function(data) {
-        socket.emit('disconnectEvent', {user_id:user_userId});
-    });
-    
-    
-    socket.on('userInfo', function(result){
-      user_username = result.username;
-      user_email = result.email;
-      user_userId = result.user_id;
-      startUserChat(socket,user_userId);
-    });
-    
-    socket.on('sendMessageResponse', function(value){
-        var user_id = value.user_id;
-        var username = value.username;
-        var email = value.email;
-        var created = value.creation_time;
-        var type = value.type;
-        var message = value.message;
-        if(type=="support"){
-           var box_class = "r-box";
-           var avatar = "https://1.img-dpreview.com/files/p/TC1x1S40~avatars/8130397526/1/avatar.jpg";
-         }else if(type=="user"){
-           var box_class = "l-box";
-           var avatar = "https://d2giyh01gjb6fi.cloudfront.net/useravatar/0001/67/thumb_66160_useravatar_small.jpeg";
-          }
-          var div = '<div class="chat-box '+box_class+'">';
-          div+='<span id="av-box"><img src="'+avatar+'"></span>';
-          div+='<p id="ms"><span id="nm">'+username+'</span><span id="ms-text">'+message+'</span></p>';
-          div+='</div>';
-          $("#chat-content").append(div);
-          $('#chat-panel').animate({scrollTop: $('#chat-content').height()}, 300);
-    });
-    socket.on('renderChat', function(data){
-      console.log(data);
-        var user_id = user_userId;
-        var welcome_message = "Hello User";
-        var chat = '<div class="chat-container" data-id="'+user_id+'" ><div id="chat-header"><p id="welcome-message">'+welcome_message+'</p></div><div id="chat-panel"><div id="chat-content">';
-        if(data.length > 0){
-          $.each(data[0].messages,function(index,value){                  
-                 var user_id = value.user_id;
-                 var username = value.username;
-                 var email = value.email;
-                 var created = value.creation_time;
-                 var type = value.type;
-                 var message = value.message;
-                 if(type=="support"){
-                   var box_class = "r-box";
-                   var avatar = "https://1.img-dpreview.com/files/p/TC1x1S40~avatars/8130397526/1/avatar.jpg";
-                 }else if(type=="user"){
-                   var box_class = "l-box";
-                   var avatar = "https://d2giyh01gjb6fi.cloudfront.net/useravatar/0001/67/thumb_66160_useravatar_small.jpeg";
-                 }
-                 var div = '<div class="chat-box '+box_class+'">';
-                 div+='<span id="av-box"><img src="'+avatar+'"></span>';
-                 div+='<p id="ms"><span id="nm">'+username+'</span><span id="ms-text">'+message+'</span></p>';
-                 div+='</div>';
-                 chat+=div;
-          });
-        }
-        chat+='</div></div><div id="conv-t-area"><textarea name="conv-t" placeholder="Type your message here"></textarea>';
-        //If data dont have client id it means he doesnt exists
-        chat+='<button id="chat-submit">Send</button></div></div>';
+        socket.on('new message',function(data){
+          $('body').append('<strong>'+data.user+'</strong>'data.msg+'<br>');
+        });
         
-          $("body").prepend(chat);
-        
-          $('#chat-submit').click(function(){
-              var msg = $("#conv-t-area textarea").val();
-              var client_id = $('.chat-container').attr("data-id");
-              $("#conv-t-area textarea").val("");
-              sendMessage(socket,client_id,msg);
-          });
-      
-          var timer = null;
-          $('#conv-t-area textarea').keydown(function(){
-            if (event.which == 13) {
-              var msg = $("#conv-t-area textarea").val();
-              $("#conv-t-area textarea").val("");
-              sendMessage(socket,msg,user_userId,user_username,user_email);
-            }else{
-               socket.emit('typing','typing');
-               clearTimeout(timer); 
-               timer = setTimeout(socket.emit('typing',''), 5000);
-            }
-          });
-      
+        socket.on('usernames',function(data){
+          for( i = 0 ; i < data.length ; i++ )
+              $('#userdiv').append(data[i]+'<br>');
+        });
       
       
       });
-  });
-</script>
-  <body>
-    
-  </body>
+    </script>
+    <body>
+      <input type="text"></input>
+      <button>Send</button>
+      <div id="userdiv" style="backround:red;color:white;"></div>
+    </body>
 </html>
