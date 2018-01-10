@@ -19,7 +19,7 @@
          }
         
         socket.on('new message',function(data){
-          $('body').append('<strong>'+data.user+'</strong>'data.msg+'<br>');
+          $('body').append('<strong>'+data.user+'</strong>'+data.msg+'<br>');
         });
         
         socket.on('usernames',function(data){
