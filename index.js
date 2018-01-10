@@ -42,7 +42,7 @@ io.sockets.on( 'connection' , function(socket){
    //Update Usernames
    function updateUsernames(){
 		socket.to('chatroom').emit('usernames', usernames );
-	   	socket.to('dashboard').emit('usernames',online_client);
+	   	socket.to('dashboard').emit('usernames', usernames );
    }
    
    //Send Message
