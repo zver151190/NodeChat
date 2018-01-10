@@ -33,6 +33,9 @@ mongodb.connect(uri, function(err, client) {
 }); 
 	
 io.on('connection', function(socket){
+	socket.on('room', function(room) {
+              socket.join(room);
+         });
 	
 	if(isClient){
           var online_client = {client_id:socket.id,username:result.username,email:result.email,user_id:result.user_id};
@@ -55,6 +58,7 @@ io.on('connection', function(socket){
 		console.log("user connected " + socket.user_id);
 
 		socket.on('disconnect',function(){
+			socket.to('dashboard').emit('dashOnline','first try');
 			console.log("user disconnected " + socket.user_id);
 			for( i = 0 ; i < client_arr.length ; i++ ){
 			   if(client_arr[i].user_id == socket.user_id ){
@@ -64,6 +68,7 @@ io.on('connection', function(socket){
 			}
 			socket.emit("dashOnline",'user deleted');
 			socket.emit("dashOnline",client_arr);
+			socket.to('dashboard').emit('dashOnline',client_arr);
 		});
 	}
 });
