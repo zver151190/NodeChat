@@ -14,7 +14,12 @@
         var room = "chatroom";
 	      socket.emit('room', room);
         
-        socket.emit('new user',username);
+        socket.emit('new user',username , function(data){
+	  if(data){
+	  }else{
+             console.log("username taken");
+	  }
+	});
          
          $('#s').click(function(){
             socket.emit('send message',$('input').val());
