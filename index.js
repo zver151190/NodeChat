@@ -34,10 +34,11 @@ mongodb.connect(uri, function(err, client) {
 	
 
 io.on('connection', function(socket){
-    	console.log("user connected");
+	socket.player = result.username;
+	console.log("user connected "+socket.player);
 	
 	socket.on('disconnect',function(){
-		console.log("user disconnected");
+		console.log("user disconnected "+socket.player);
 	});
 });
 
