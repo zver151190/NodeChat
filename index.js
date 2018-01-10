@@ -10,7 +10,7 @@ var client_id= [];
 var client_arr = [];
 var result;
 var isClient = false;
-const db;
+var db;
 app.use(express.static(path.join(__dirname, 'public')))
   
 app.get('/', function(req, res){
